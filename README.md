@@ -9,8 +9,7 @@ This example project gets you started with using Node.js to build a [Box webhook
 
 You should have a basic understanding of the OpenWhisk programming model. If not, [try the action, trigger, and rule demo first](https://github.com/IBM/openwhisk-action-trigger-rule).
 
-Also, you'll need an IBM Cloud account and the latest [Whisk Deploy Utility (`wskdeploy`) installed and on your PATH](https://github.com/apache/incubator-openwhisk-wskdeploy#downloading-released-binaries).
-
+Also, you'll need an IBM Cloud account, the latest [OpenWhisk command line tool (`bx wsk`)](https://github.com/IBM/openwhisk-action-trigger-rule/blob/master/docs/OPENWHISK.md) and [Whisk Deploy Utility (`wskdeploy`) ](https://github.com/apache/incubator-openwhisk-wskdeploy#downloading-released-binaries) installed and on your PATH.
 
 ### Using the sample
 ##### Step 1. Create a Box application
