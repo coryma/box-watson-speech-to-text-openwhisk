@@ -52,6 +52,8 @@ $ npm install
     * In `watsonPassword`, paste the Watson service credentials that you obtained in the previous step
     * In `watsonLanguage`, input the [identifier](https://www.ibm.com/watson/developercloud/speech-to-text/api/v1/curl.html?curl#recognize) of the model that is to be used for the recognition 
     * In `watsonContentType`, input the [audio format](https://www.ibm.com/watson/developercloud/speech-to-text/api/v1/curl.html?curl#recognize) that is to be used for the recognition
+    
+    *Note: The parameter must be surrounded by single quotes.*
 
 ##### Step 4. Create OpenWhisk actions and mappings
 
