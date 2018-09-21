@@ -44,10 +44,10 @@ $ git clone https://github.com/coryma/box-node-webhook-to-speech-to-text-openwhi
 $ cd box-node-webhook-to-openwhisk-sample
 $ npm install
 ```
-2. Rename manifest.template.yaml to manifest.template
-3. Edit lmanifest.template
+2. Rename manifest.template.yaml to manifest.yaml
+3. Edit manifest.template.yaml
     * In `boxUserId`, input your Box account ID 
-    * In `boxConfig`, paste the contents of your JSON config file into the `''` (keep the single quote) that you obtained in [Step 1](#Create-a-Box-application) 
+    * In `boxConfig`, paste the contents of your JSON config file that you obtained in [Step 1](#Create-a-Box-application) 
     * In `watsonUserName`, paste the Watson service credentials that you obtained in the previous step
     * In `watsonPassword`, paste the Watson service credentials that you obtained in the previous step
     * In `watsonLanguage`, input the [identifier](https://www.ibm.com/watson/developercloud/speech-to-text/api/v1/curl.html?curl#recognize) of the model that is to be used for the recognition 
