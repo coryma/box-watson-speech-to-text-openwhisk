@@ -1,0 +1,18 @@
+packages:
+  box-webhook-handler:
+    version: 1.0
+    license: Apache-2.0
+    actions:
+      speech-to-text:
+        location: action.zip
+        runtime: nodejs:8
+        web: raw
+        inputs:
+          boxConfig: ''
+          boxUserId: ''
+          watsonUserName: ''
+          watsonPassword: ''
+          watsonLanguage: ''
+          watsonContentType: ''
+
+  

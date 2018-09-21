@@ -5,8 +5,10 @@ import BoxSDK from 'box-node-sdk'
 
 function main(args) {
 
+console.log(args.boxConfig)
     const boxConfig = JSON.parse(args.boxConfig)
     const boxUserId = args.boxUserId
+    console.log(boxConfig)
 
     let body = new Buffer(args.__ow_body, 'base64')
     body = JSON.parse(body.toString('utf8'));
@@ -33,22 +35,29 @@ function main(args) {
             //Read file stream
             boxClient.files.getReadStream(body.source.id, null, (err, stream) => {
 
-                var params = {
-                    // From file
-                    audio: stream,
-                    content_type: 'audio/mp3',
-                    model: 'zh-CN_BroadbandModel'
-                };
+                if (err) {
+                    console.log(`Error: ${err.message}`)
+                    reject({ message: err.message })
+                } else {
 
-                speechToText.recognize(params, (err, res) => {
-                    if (err) {
-                        console.log(err.message)
-                        reject({ message: err.message })
-                    } else {
-                        console.log(JSON.stringify(res, null, 2))
-                        resolve({ payload: JSON.stringify(res, null, 2) })
-                    }
-                });
+                    var params = {
+                        // From file
+                        audio: stream,
+                        content_type: args.watsonContentType,
+                        model: args.watsonLanguage
+                    };
+
+
+                    speechToText.recognize(params, (err, res) => {
+                        if (err) {
+                            console.log(err.message)
+                            reject({ message: err.message })
+                        } else {
+                            console.log(JSON.stringify(res, null, 2))
+                            resolve({ payload: JSON.stringify(res, null, 2) })
+                        }
+                    })
+                }
             })
         } else {
             console.log(`Error 403: Message authenticity not verified ${isValid}`)
@@ -75,6 +84,5 @@ function stringifyBody(obj) {
 }
 
 exports.main = main;
-
 
 

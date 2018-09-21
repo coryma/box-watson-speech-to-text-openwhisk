@@ -2,7 +2,7 @@
 source local.env
 
 function usage() {
-  echo -e "Usage: $0 [--install,--uninstall,--env]"
+  echo -e "Usage: $0 [--install,--uninstall]"
 }
 
 function install() {
@@ -11,7 +11,7 @@ function install() {
 
   npx babel src --out-dir dist
   zip -rq action.zip *
-  WATSON_USER_NAME=$WATSON_USER_NAME WATSON_PASSWORD=$WATSON_PASSWORD BOX_CONFIG=$BOX_CONFIG BOX_USER_ID=$BOX_USER_ID wskdeploy -p .
+  wskdeploy -p .
   
   echo -e "Install Complete"
 }
@@ -19,7 +19,7 @@ function install() {
 function uninstall() {
   echo -e "Uninstalling..."
 
-   wskdeploy undeploy
+ wskdeploy undeploy
 
   echo -e "Uninstall Complete"
 }

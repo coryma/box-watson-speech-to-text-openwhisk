@@ -1,16 +1,11 @@
 # box-watson-speech-to-text-openwhisk
-This example project gets you started with using Node.js to build [Box webhook](https://github.com/box/box-node-sdk/blob/master/docs/webhooks.md) handler app and deoploy it on the IBM Cloud Functions platform (powered by Apache OpenWhisk).
-
-## Getting Started
-
-These instructions will get you a copy of the project up and running the IBM Cloud Functions platform for Box webhook app development and testing purposes. 
+This example project gets you started with using Node.js to build a [Box webhook](https://github.com/box/box-node-sdk/blob/master/docs/webhooks.md) handler app to handle the upload file event then uses Watson Speech-to-text API to covert the speech to the text.
 
 ### Prerequisites
 
 - [Node.js](https://nodejs.org/en/)
 - [NPM](https://www.npmjs.com/)
 - [Box Developer Account](https://developer.box.com/)
-- [IBM Cloud CLI](https://console.bluemix.net/docs/cli/index.html#overview)
 
 You should have a basic understanding of the OpenWhisk programming model. If not, [try the action, trigger, and rule demo first](https://github.com/IBM/openwhisk-action-trigger-rule).
 
@@ -35,31 +30,42 @@ Also, you'll need an IBM Cloud account and the latest [Whisk Deploy Utility (`ws
     * Press "Download as JSON"
     * Save the JSON config file, which contains your application's webhook signing keys
 
-##### Step 2. Clone the repository 
+##### Step 2. Create a Speech to Text service 
+1. Select [Speech to Text](https://console.bluemix.net/catalog/services/speech_to_text) service in IBM Cloud (you have to Log into your IBM Cloud account first)
+2. Press **Create** on the bottom of the screen
+3. Press **Show Credentials** to get the username and the password
+    * Copy the value of `Username`
+    * Copy the value of `Password`
+
+##### Step 3. Clone the repository 
 
 1. Clone the respository and initial the project
 ```
-$ git clone https://github.com/coryma/box-node-webhook-to-openwhisk-sample.git # or fork and clone your own
+$ git clone https://github.com/coryma/box-node-webhook-to-speech-to-text-openwhisk.git # or fork and clone your own
 $ cd box-node-webhook-to-openwhisk-sample
 $ npm install
 ```
-2. Rename local.env.template to local.env
-3. Edit local.env
-    * In `BOX_USER_ID`, input your Box account ID 
-    * In `BOX_CONFIG`, paste the contents of your JSON config file into the `''` (keep the single quote). 
+2. Rename manifest.template.yaml to manifest.template
+3. Edit lmanifest.template
+    * In `boxUserId`, input your Box account ID 
+    * In `boxConfig`, paste the contents of your JSON config file into the `''` (keep the single quote) that you obtained in [Step 1](#Create-a-Box-application) 
+    * In `watsonUserName`, paste the Watson service credentials that you obtained in the previous step
+    * In `watsonPassword`, paste the Watson service credentials that you obtained in the previous step
+    * In `watsonLanguage`, input the [identifier](https://www.ibm.com/watson/developercloud/speech-to-text/api/v1/curl.html?curl#recognize) of the model that is to be used for the recognition 
+    * In `watsonContentType`, input the [audio format](https://www.ibm.com/watson/developercloud/speech-to-text/api/v1/curl.html?curl#recognize) that is to be used for the recognition
 
-##### Step 3. Create OpenWhisk actions and mappings
+##### Step 4. Create OpenWhisk actions and mappings
 
 1. Deploy the package and the action
 ```bash
 ./deploy.sh --install
 ```
 2. Log into the [IBM Cloud console](https://console.bluemix.net/openwhisk/actions)
-    * Find your package and action in the right panel, and click the action name (ex. hello-box). 
+    * Find your package and action in the right panel, and click the action name (ex. speech-to-text). 
 3. Click "Endpoints" section in the left-side navbar 
     * Copy the "URL" in "Web Actions"
 
-#### Step 4. Create a Box webhook to connect to your OpenWhisk action
+#### Step 5. Create a Box webhook to connect to your OpenWhisk action
 Note: See [Getting Started with Webhooks V2](https://docs.box.com/v2.0/docs/getting-started-with-webhooks-v2) and [Overview of Webhooks V2](https://docs.box.com/reference#webhooks-v2) for more info.
 
 1. Choose a folder in your Box account and record the "Folder ID"
@@ -85,13 +91,27 @@ Note: See [Getting Started with Webhooks V2](https://docs.box.com/v2.0/docs/gett
     
     * Note the `<WEBHOOK_ID>` in case you need to modify or delete the webhook later
 
-#### Step 5. Test the webhook
+#### Step 6. Test the webhook
 1. Tail the logs
 ```
 bx wsk activation poll
 ```
 2. Upload a file to the Box folder that you specified when creating the webhook
-3. You should see a new set of events appear in the heroku logs:
+3. You should see a new set of events appear in the logs:
     ```
-    webhook=########, trigger=FILE.UPLOADED, source=<file id=########### name=xxxx.xx>
+    Activation: 'speech-to-text' (33295a0a1afc405ca95a0a1afca05c53)
+    [
+    "2018-09-20T14:50:59.992291238Z stdout: {",
+    "2018-09-20T14:50:59.992322007Z stdout: \"results\": [",
+    "2018-09-20T14:50:59.992327593Z stdout: {",
+    "2018-09-20T14:50:59.992332367Z stdout: \"alternatives\": [",
+    "2018-09-20T14:50:59.992337247Z stdout: {",
+    "2018-09-20T14:50:59.992341835Z stdout: \"confidence\": 0.58,",
+    "2018-09-20T14:50:59.992346642Z stdout: \"transcript\": \"well let me think I sound so young \"",
+    "2018-09-20T14:50:59.992351856Z stdout: }",
+    .
+    .
+    .
+    ]
+
     ```

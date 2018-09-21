@@ -3,3 +3,5 @@ dist
 action.zip
 local.env
 .gitattributes 
+manifest.yaml
+.vscode-upload.json
